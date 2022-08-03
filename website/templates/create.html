@@ -1,169 +1,127 @@
 {% extends "base.html" %}
 {% block title %}Generator faktur{% endblock %}
-<!--
-    <h1>Generate</h1>
-    
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.numer_faktury.label }}<br>
-            {{ form.numer_faktury(size=32) }}
-        </p>
-        <p>
-            {{ form.data_wystawienia.label }}<br>
-            {{ form.data_wystawienia(size=32) }}
-        </p>
-        <p>
-            {{ form.data_sprzedaży.label }}<br>
-            {{ form.data_sprzedaży(size=32) }}
-        </p>
-        <p>
-            {{ form.sprzedawca.label }}<br>
-            {{ form.sprzedawca(size=32) }}
-        </p>
-        <p>
-            {{ form.nip_sprzedawcy.label }}<br>
-            {{ form.nip_sprzedawcy(size=32) }}
-        </p>                               
-        <p>
-            {{ form.miejscowosc_sprzedawcy.label }}<br>
-            {{ form.miejscowosc_sprzedawcy(size=32) }}
-        </p>
-        <p>
-            {{ form.ulica_sprzedawcy.label }}<br>
-            {{ form.ulica_sprzedawcy(size=32) }}
-        </p>
-        <p>
-            {{ form.kod_pocztowy_sprzedawcy.label }}<br>
-            {{ form.kod_pocztowy_sprzedawcy(size=32) }}
-        </p>
-        <p>
-            {{ form.nabywca.label }}<br>
-            {{ form.nabywca(size=32) }}
-        </p>
-        <p>
-            {{ form.nip_nabywcy.label }}<br>
-            {{ form.nip_nabywcy(size=32) }}
-        </p>
-        <p>
-            {{ form.miejscowosc_nabywcy.label }}<br>
-            {{ form.miejscowosc_nabywcy(size=32) }}
-        </p>
-        <p>
-            {{ form.ulica_nabywcy.label }}<br>
-            {{ form.ulica_nabywcy(size=32) }}
-        </p>
-        <p>
-            {{ form.kod_pocztowy_nabywcy.label }}<br>
-            {{ form.kod_pocztowy_nabywcy(size=32) }}
-        </p>
-        <p>
-            {{ form.nazwa_usługi.label }}<br>
-            {{ form.nazwa_usługi(size=32) }}
-        </p>
-        <p>
-            {{ form.jednostka.label }}<br>
-            {{ form.jednostka(size=32) }}
-        </p>   
-        <p>
-            {{ form.ilosc.label }}<br>
-            {{ form.ilosc(size=32) }}
-        </p> 
-        <p>
-            {{ form.cena.label }}<br>
-            {{ form.cena(size=32) }}
-        </p>                                                                              
-        <p>{{ form.submit() }}</p>
-    </form>
--->
+
 {% block content %}
-    <h1>Generate</h1>
-    
-    <form action="" method="post" novalidate>
+<div class="container">
+    <h1 class="col-8">Faktura bez VAT</h1><br><br>
+</div>  
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.data_wystawienia.label }}<br>
-            {{ form.data_wystawienia(size=32) }}
-        </p>
-        <p>
-            {{ form.data_sprzedazy.label }}<br>
-            {{ form.data_sprzedazy(size=32) }}
-        </p>
-        <p>
-            {{ form.numer_faktury.label }}<br>
-            {{ form.numer_faktury(size=32) }}
-        </p>
-        <table>
-            <tr>
-                <td>
-                    {{ form.sprzedawca.label }}<br>
-                    {{ form.sprzedawca(size=10) }}<br><br>
-                </td>
-                <td>
-                    {{ form.nabywca.label }}<br>
-                    {{ form.nabywca(size=10) }}<br><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {{ form.nip_sprzedawcy.label }}<br>
-                    {{ form.nip_sprzedawcy(size=10) }}<br><br>
-                </td>
-                <td>
-                    {{ form.nip_nabywcy.label }}<br>
-                    {{ form.nip_nabywcy(size=10) }}<br><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {{ form.ulica_sprzedawcy.label }}<br>
-                    {{ form.ulica_sprzedawcy(size=10) }}<br><br>
-                </td>
-                <td>
-                    {{ form.ulica_nabywcy.label }}<br>
-                    {{ form.ulica_nabywcy(size=10) }}<br><br>
-                </td>              
-            </tr>
-            <tr>
-                <td>
-                    {{ form.miejscowosc_sprzedawcy.label }}<br>
-                    {{ form.miejscowosc_sprzedawcy(size=12) }}<br><br>
-                </td>
-                <td>
-                    {{ form.kod_pocztowy_sprzedawcy.label }}<br>
-                    {{ form.kod_pocztowy_sprzedawcy(size=8) }}<br><br>
-                </td>
-                <td>
-                    {{ form.miejscowosc_nabywcy.label }}<br>
-                    {{ form.miejscowosc_nabywcy(size=12) }}<br><br>
-                </td>   
-                <td>
-                    {{ form.kod_pocztowy_nabywcy.label }}<br>
-                    {{ form.kod_pocztowy_nabywcy(size=8) }}<br><br>
-                </td>           
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td>
-                    {{ form.nazwa_usługi.label }}<br>
-                    {{ form.nazwa_usługi(size=12) }}
-                </td>
-                <td>
-                    {{ form.jednostka.label }}<br>
-                    {{ form.jednostka(size=8) }}
-                </td>
-                <td>
-                    {{ form.ilosc.label }}<br>
-                    {{ form.ilosc(size=8) }}
-                </td>   
-                <td>
-                    {{ form.cena.label }}<br>
-                    {{ form.cena(size=8) }}
-                </td> 
-            </tr>
-        </table>
+        <div class="row">
+            <div class="col-4">
+                {{ form.data_wystawienia.label }}<br>
+                {{ form.data_wystawienia( class="form-control") }}
+            </div>
+            <div class="col-4">
+                {{ form.data_sprzedazy.label }}<br>
+                {{ form.data_sprzedazy( class="form-control") }}
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+                {{ form.numer_faktury.label }}<br>
+                {{ form.numer_faktury( class="form-control") }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-5">
+                {{ form.sprzedawca.label }}<br>
+                {{ form.sprzedawca( class="form-control") }}
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-5">
+                {{ form.nabywca.label }}<br>
+                {{ form.nabywca( class="form-control") }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-5">
+                {{ form.nip_sprzedawcy.label }}<br>
+                {{ form.nip_sprzedawcy( class="form-control") }}
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-5">
+                {{ form.nip_nabywcy.label }}<br>
+                {{ form.nip_nabywcy( class="form-control") }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-5">
+                {{ form.ulica_sprzedawcy.label }}<br>
+                {{ form.ulica_sprzedawcy( class="form-control") }}
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-5">
+                {{ form.ulica_nabywcy.label }}<br>
+                {{ form.ulica_nabywcy( class="form-control") }}
+            </div>
+        </div>        
+
+        <div class="row">
+            <div class="col-3">
+                {{ form.miejscowosc_sprzedawcy.label }}<br>
+                {{ form.miejscowosc_sprzedawcy( class="form-control") }}
+            </div>
+            <div class="col-2">
+                {{ form.kod_pocztowy_sprzedawcy.label }}<br>
+                {{ form.kod_pocztowy_sprzedawcy( class="form-control") }}
+            </div>            
+            <div class="col-2">
+            </div>
+            <div class="col-3">
+                {{ form.miejscowosc_nabywcy.label }}<br>
+                {{ form.miejscowosc_nabywcy( class="form-control") }}
+            </div>
+            <div class="col-2">
+                {{ form.kod_pocztowy_nabywcy.label }}<br>
+                {{ form.kod_pocztowy_nabywcy( class="form-control") }}
+            </div>            
+        </div> 
+        <div class="row">
+            <div class="col-8">
+                {{ form.nazwa_usługi.label }}<br>
+                {{ form.nazwa_usługi( class="form-control") }}            
+            </div>
+            <div class="col-1">
+                {{ form.jednostka.label }}<br>
+                {{ form.jednostka( class="form-control") }}            
+            </div>
+            <div class="col-1">
+                {{ form.ilosc.label }}<br>
+                {{ form.ilosc( class="form-control") }}            
+            </div>
+            <div class="col-2">
+                {{ form.cena.label }}<br>
+                {{ form.cena( class="form-control") }}            
+            </div>                                    
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {{ form.platnosc.label }}<br>
+                {{ form.platnosc( class="form-control") }}            
+            </div>   
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+                {{ form.nr_konta.label }}<br>
+                {{ form.nr_konta( class="form-control") }}            
+            </div>                                  
+        </div>                        
         <br><br>
-        <p>{{ form.submit() }}</p>
+            <!--<input type= file name= file novaliate>-->
+            {{ form.file }}
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col-1">{{ form.submit( class="btn btn-primary btn-lg") }}</div>
+        </div>
+             
     </form>
+</div>
 {% endblock %}

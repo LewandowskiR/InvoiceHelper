@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FileField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Optional
 from .models import User
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    username = StringField('Nazwa Użytkownika', validators=[DataRequired()])
+    password = PasswordField('Hasło', validators=[DataRequired()])
+    remember_me = BooleanField('Zapamiętaj mnie')
+    submit = SubmitField('Zaloguj')
     
 
 class BasicInvoiceForm(FlaskForm):
@@ -32,22 +32,27 @@ class BasicInvoiceForm(FlaskForm):
     ilosc = IntegerField('ilosc')
     cena = IntegerField('cena')
     
+    platnosc = StringField('sposob platnosci')
+    nr_konta = IntegerField('nr konta')
+    
+    file = FileField('file', validators=[Optional()])
+    
     submit = SubmitField('Generuj')
     
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Nazwa Użytkownika', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Hasło', validators=[DataRequired()])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+        'Powtórz Hasło', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Zarejestruj')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username.')
+            raise ValidationError('Nazwa uzytkownika zajęta.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('Adres e-mail jest już wykorzystany.')

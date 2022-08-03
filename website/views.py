@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, redirect, send_from_directory, request, url_for
-from flask_login import current_user, login_user, logout_user
-from .models import User
+from flask import Blueprint, render_template, redirect, send_from_directory, request, url_for, flash
+from flask_login import current_user, login_user, logout_user, login_required
+from .models import User, Invoice
 from .forms import LoginForm, BasicInvoiceForm, RegistrationForm
 from .pdfgenerator import BasicInvoiceGenerate
-from . import db
+from . import db, allowed_file
+from werkzeug.utils import secure_filename
+import os
 
 
 views = Blueprint('views', __name__)
@@ -16,32 +18,43 @@ def home():
 @views.route('/create', methods=['GET', 'POST'])
 def createInvoice():
     form = BasicInvoiceForm()
-    if form.validate_on_submit():
-        formdata = {
-            "data_wystawienia": form.data_wystawienia.data,
-            "data_sprzedazy": form.data_sprzedazy.data,
-            "sprzedawca": form.sprzedawca.data,
-            "nabywca": form.nabywca.data,
-            "nip_sprzedawcy": form.nip_sprzedawcy.data,
-            "nip_nabywcy": form.nip_nabywcy.data,
-            "ulica_sprzedawcy": form.ulica_sprzedawcy.data,
-            "ulica_nabywcy": form.ulica_nabywcy.data,
-            "miejscowosc_sprzedawcy": form.miejscowosc_sprzedawcy.data,
-            "miejscowosc_nabywcy": form.miejscowosc_nabywcy.data,
-            "kod_sprzedawcy": form.kod_pocztowy_sprzedawcy.data,
-            "kod_nabywcy": form.kod_pocztowy_nabywcy.data,
-            "numer_faktury": form.numer_faktury.data,
-            "nazwa_uslugi": form.nazwa_usługi.data,
-            "jednostka": form.jednostka.data,
-            "ilosc": form.ilosc.data,
-            "cena": form.cena.data
-            }
-        BasicInvoiceGenerate(formdata)
+    if form.validate_on_submit():         
+        #if 'file' in request.files:
+        file = request.files['file']
+        if file.filename == '':
+            basedir = os.path.abspath(os.path.dirname(__file__))
+            imageloc = f'{basedir}/static/invoiceimg.png'            
+            BasicInvoiceGenerate(request.form, imageloc) 
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            basedir = os.path.abspath(os.path.dirname(__file__))
+            imageloc = f'{basedir}/static/uploads/{filename}'
+            file.save(imageloc)
+            BasicInvoiceGenerate(request.form, imageloc)
+            os.remove(imageloc)
         directory = 'static/'
-        filename = 'tuto1.pdf'
+        filename = 'invoice1.pdf'
+        
+        #Adding Invoice to the database
+        
+        if not current_user.is_anonymous:
+            invoice = Invoice(
+                numer_faktury=form.numer_faktury.data,
+                sprzedawca = form.sprzedawca.data,
+                nip_sprzedawcy = form.nip_sprzedawcy.data,
+                nabywca = form.nabywca.data,
+                nip_nabywcy=form.nip_nabywcy.data,
+                creator = current_user
+                )
+            db.session.add(invoice)
+            db.session.commit()
+        
         return send_from_directory(directory, filename)
+    print("not validated")
     return render_template("create.html", form=form)
 
+
+           
 @views.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -72,3 +85,10 @@ def registration():
         db.session.commit()
         return redirect(url_for('views.login'))
     return render_template('register.html', title='Rejestracja', form=form)
+
+@views.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    invoices = Invoice.query.filter_by(user_id = current_user.id)
+    return render_template('user.html', user=user, invoices=invoices)

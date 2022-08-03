@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="text-center pt-5">
+    {%if user == current_user%}
+        <h1> Czesć {{user.username}}</h1><br><br>
+    {% else %}
+        <h1> Profil użytkownika {{user.username}}</h1><br><br>
+    {% endif%}
+</div>
+<div class="container">
+    {%if user == current_user%}
+        {% for invoice in invoices %} 
+            <p style="display: none">{{loop.index}}</p>
+            {% include '_invoice.html' %}
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
